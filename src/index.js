@@ -15,25 +15,13 @@ refs.searchBox.addEventListener('input', debounce(onCountryNameInput, DEBOUNCE_D
 function onCountryNameInput(e) {
     e.preventDefault();
     const inputName = e.target.value.trim();
-    if (!inputName) {
-        cleaningMarkup();
-    } else {
-        cleaningMarkup(); // ------------
+    cleaningMarkup();
+    if (inputName) {
         fetchCountries(inputName)
-        .then(response => {
-            if (response.status === 404) {
-                cleaningMarkup();
-                return Promise.reject(new Error())
-            }
-            return  response.json()
-        })    
-        .then(renderCountries)
-            .catch(e => {
-                Notify.failure("Oops, there is no country with that name");
-                // console.log(e)
-        })
-    }
-    
+            .then(renderCountries)
+            .catch((e) => { Notify.failure("Oops, there is no country with that name")})
+        
+    };
 };
 
 function renderCountries(countries) {
